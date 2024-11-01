@@ -1,0 +1,32 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: booking
+  mongodb:
+    database: booking
+  kafka:
+    bootstrap-servers:
+      - http://localhost:9092
+  cloud:
+    function:
+      definition: consumeAll
+    stream:
+      kafka:
+        binder:
+          brokers:
+            - http://localhost:9092
+      function:
+        bindings:
+          consumeAll-in-0: input
+      bindings:
+        input:
+          destination: xx
+          group: booking
+        output:
+          destination: xx
+  logging:
+    level:
+      org.springframework.cloud.stream: INFO
+      org.mongodb: INFO
+
