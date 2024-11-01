@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: booking
+          uri: http://127.0.0.1:8082
+          predicates:
+            -Path=/booking/**
+        - id: financial
+          uri: http://127.0.0.1:8083
+          predicates:
+            -Path=/financial/**
+        - id: shell
+          uri: http://127.0.0.1:8081
+          predicates:
+            -Path=/**
+
