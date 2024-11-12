@@ -1,11 +1,12 @@
 package io.mateu.article2.shell.infra.primary.ui;
 
 
-import io.mateu.core.domain.uidefinition.core.interfaces.HasIcon;
-import io.mateu.core.domain.uidefinition.core.interfaces.HasTitle;
-import io.mateu.core.domain.uidefinition.core.interfaces.Icon;
-import io.mateu.core.domain.uidefinition.shared.annotations.*;
-import io.mateu.core.domain.uidefinition.shared.annotations.Home;
+import io.mateu.uidl.annotations.Caption;
+import io.mateu.uidl.annotations.MateuUI;
+import io.mateu.uidl.annotations.MenuOption;
+import io.mateu.uidl.data.RemoteMenu;
+import io.mateu.uidl.interfaces.HasIcon;
+import io.mateu.uidl.interfaces.HasTitle;
 
 @MateuUI("")
 @Caption("Mateu's booking system")
@@ -13,14 +14,14 @@ public class ShellUI implements HasTitle, HasIcon {
 
 
     @MenuOption
-    String booking = "Hola booking!";
+    RemoteMenu booking = new RemoteMenu("booking/mateu/v3", "io.mateu.article2.booking.infra.primary.ui.BookingUI", "bookings");
 
 
     @MenuOption
     String financial = "Hola financial!";
 
-    @Home
-    io.mateu.article2.shell.infra.primary.ui.Home home;
+    @io.mateu.uidl.annotations.Home
+    Home home;
 
 
     @Override

@@ -1,10 +1,18 @@
 server:
   port: 8083
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dev
+    username: dev
+    password: dev
+#  r2dbc:
+#    url: r2dbc:postgresql://localhost:5432/dev
+#    username: dev
+#    password: dev
+#    pool:
+#      enabled: true
   application:
     name: financial
-  mongodb:
-    database: financial
   kafka:
     bootstrap-servers:
       - http://localhost:9092
@@ -29,4 +37,11 @@ spring:
     level:
       org.springframework.cloud.stream: INFO
       org.mongodb: INFO
-
+  jooq:
+    sql-dialect: postgres
+logging:
+  level:
+    org:
+      jooq:
+        tools:
+          LoggerListener: DEBUG

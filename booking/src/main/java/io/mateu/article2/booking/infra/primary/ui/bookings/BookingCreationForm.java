@@ -2,7 +2,7 @@ package io.mateu.article2.booking.infra.primary.ui.bookings;
 
 import io.mateu.article2.booking.application.createbooking.CreateBookingRequest;
 import io.mateu.article2.booking.application.createbooking.CreateBookingUseCase;
-import io.mateu.core.domain.uidefinition.shared.annotations.MainAction;
+import io.mateu.uidl.annotations.MainAction;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 

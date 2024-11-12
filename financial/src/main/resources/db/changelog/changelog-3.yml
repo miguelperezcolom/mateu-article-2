@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Liquibase
+      changes:
+        - createTable:
+            tableName: test_table3
+            columns:
+              - column:
+                  name: test_column
+                  type: INT
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false

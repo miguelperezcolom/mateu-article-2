@@ -1,6 +1,6 @@
 package io.mateu.article2.shell.infra.primary.ui;
 
-import io.mateu.core.domain.uidefinition.shared.annotations.RawContent;
+import io.mateu.uidl.annotations.RawContent;
 
 public class Home {
 

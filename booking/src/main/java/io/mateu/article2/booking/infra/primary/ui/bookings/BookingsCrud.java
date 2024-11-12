@@ -2,16 +2,15 @@ package io.mateu.article2.booking.infra.primary.ui.bookings;
 
 import io.mateu.article2.booking.application.searchbookings.SearchBookingUseCase;
 import io.mateu.article2.booking.domain.booking.valueobjects.BookingStatus;
-import io.mateu.core.domain.uidefinition.core.interfaces.Crud;
-import io.mateu.core.domain.uidefinition.shared.data.Status;
-import io.mateu.core.domain.uidefinition.shared.data.StatusType;
+import io.mateu.uidl.data.Status;
+import io.mateu.uidl.data.StatusType;
+import io.mateu.uidl.interfaces.Crud;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.List;
 
 record BookingRow(String id, String customer, LocalDate startDate, LocalDate endDate, Status status) {
 }
