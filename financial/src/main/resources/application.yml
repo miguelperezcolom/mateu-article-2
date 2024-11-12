@@ -2,7 +2,7 @@ server:
   port: 8083
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/dev
+    url: jdbc:mariadb://localhost:3306/dev
     username: dev
     password: dev
 #  r2dbc:
@@ -38,7 +38,7 @@ spring:
       org.springframework.cloud.stream: INFO
       org.mongodb: INFO
   jooq:
-    sql-dialect: postgres
+    sql-dialect: mariadb
 logging:
   level:
     org:

@@ -37,15 +37,15 @@ class FinancialApplicationTests {
         var record = context.select(TestTable5.TEST_TABLE5.TEST_COLUMN)
                 .from(TestTable5.TEST_TABLE5).fetch();
         var list = record.stream().toList();
-        System.out.println("list = " + list);
+        System.out.println("list = " + list.stream().map(r -> r.component1()).toList());
         System.out.println("list.size = " + list.size());
     }
 
     @Test
     void reactiveSelectWorks() throws SQLException {
 
-        var list = Flux.from(context.select(TestTable.TEST_TABLE.TEST_COLUMN)
-                .from(TestTable.TEST_TABLE)).collectList().block();
+        var list = Flux.from(context.select(TestTable5.TEST_TABLE5.TEST_COLUMN)
+                .from(TestTable5.TEST_TABLE5)).map(r -> r.component1()).collectList().block();
         System.out.println("list = " + list);
         System.out.println("list.size = " + list.size());
     }
