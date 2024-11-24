@@ -1,0 +1,16 @@
+scheduling.enabled: false
+server:
+  port: 8083
+spring:
+  application:
+    name: booking
+  logging:
+    level:
+      org.springframework.cloud.stream: INFO
+      org.springframework.boot.autoconfigure.mongo.embedded: INFO
+      org.mongodb: INFO
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.stream.config.BindingServiceConfiguration
+      - org.springframework.cloud.stream.function.FunctionConfiguration
+de.flapdoodle.mongodb.embedded.version: 5.0.5

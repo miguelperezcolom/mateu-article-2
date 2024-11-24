@@ -1,6 +1,7 @@
 package io.mateu.article2.booking.application.searchbookings;
 
 import io.mateu.article2.booking.domain.booking.Booking;
+import io.mateu.article2.booking.domain.booking.BookingState;
 import io.mateu.article2.booking.domain.booking.BookingRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

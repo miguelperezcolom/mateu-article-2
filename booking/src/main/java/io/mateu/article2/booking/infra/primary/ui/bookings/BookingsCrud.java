@@ -5,12 +5,15 @@ import io.mateu.article2.booking.domain.booking.valueobjects.BookingStatus;
 import io.mateu.uidl.data.Status;
 import io.mateu.uidl.data.StatusType;
 import io.mateu.uidl.interfaces.Crud;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 record BookingRow(String id, String customer, LocalDate startDate, LocalDate endDate, Status status) {
 }
@@ -19,6 +22,8 @@ record BookingFilters() {
 }
 
 
+@Service
+@Scope("prototype")
 public class BookingsCrud implements Crud<BookingFilters, BookingRow> {
 
     final BookingCreationForm bookingCreationForm;
@@ -33,6 +38,7 @@ public class BookingsCrud implements Crud<BookingFilters, BookingRow> {
     public Mono<Page<BookingRow>> fetchRows(String searchText, BookingFilters filters, Pageable pageable) throws Throwable {
         return searchBookingUseCase.search(searchText, pageable)
                 .map(p -> new PageImpl<>(p.getContent().stream()
+                                .map(b -> b.getState())
                         .map(b -> new BookingRow(
                                 b.id().id(),
                                 b.customerName().name(),
@@ -52,6 +58,7 @@ public class BookingsCrud implements Crud<BookingFilters, BookingRow> {
 
     @Override
     public Object getNewRecordForm() throws Throwable {
+        bookingCreationForm.id = UUID.randomUUID().toString();
         return bookingCreationForm;
     }
 }

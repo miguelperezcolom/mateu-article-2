@@ -1,0 +1,32 @@
+server:
+  port: 8083
+spring:
+  #  datasource:
+  #    url: jdbc:mariadb://localhost:3306/dev
+  #    username: dev
+  #    password: dev
+  r2dbc:
+    url: r2dbc:mariadb://localhost:3306/dev
+    username: dev
+    password: dev
+    pool:
+      enabled: true
+  application:
+    name: financial
+  logging:
+    level:
+      org.springframework.cloud.stream: INFO
+      org.mongodb: INFO
+  jooq:
+    sql-dialect: mariadb
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.stream.config.BindingServiceConfiguration
+      - org.springframework.cloud.stream.function.FunctionConfiguration
+logging:
+  level:
+    org:
+      jooq:
+        Constants: WARN
+        tools:
+          LoggerListener: DEBUG
