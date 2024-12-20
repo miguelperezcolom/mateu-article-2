@@ -9,7 +9,5 @@ public interface BookingRepository {
 
     Mono<Void> save(Booking booking);
 
-    Mono<Page<Booking>> search(String text, Pageable pageable);
-
     Mono<Booking> findById(BookingId bookingId);
 }

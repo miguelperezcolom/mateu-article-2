@@ -33,7 +33,14 @@ public class BookingFactory {
                 UUID.randomUUID().toString(),
                 "booking-" + id.id(),
                 LocalDateTime.now(),
-                new BookingCreated(id.id())
+                new BookingCreated(
+                        id.id(),
+                        customerName.name(),
+                        serviceDescription.description(),
+                        startDate.date(),
+                        endDate.date(),
+                        value.value(),
+                        BookingStatus.Confirmed.name())
         ));
         return booking;
     }

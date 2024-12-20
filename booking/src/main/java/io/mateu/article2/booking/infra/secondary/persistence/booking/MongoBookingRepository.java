@@ -7,15 +7,10 @@ import io.mateu.article2.booking.domain.booking.BookingState;
 import io.mateu.article2.booking.domain.booking.valueobjects.*;
 import io.mateu.article2.booking.infra.secondary.persistence.event.EventEntity;
 import io.mateu.article2.booking.infra.secondary.persistence.event.EventEntityRepository;
-import io.mateu.article2.booking.infra.secondary.persistence.event.EventProcessingStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import io.mateu.article2.shared.events.EventProcessingStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 @Service
 public class MongoBookingRepository implements BookingRepository {
@@ -33,16 +28,9 @@ public class MongoBookingRepository implements BookingRepository {
     @Override
     public Mono<Void> save(Booking booking) {
         var state = booking.getState();
-        return bookingEntityRepository.save(new BookingEntity(
-                state.id().id(),
-                        state.customerName().name(),
-                        state.serviceDescription().description(),
-                        state.startDate().date(),
-                        state.endDate().date(),
-                        state.value().value(),
-                        state.status().name(),
-                        state.customerName().name() + " " + state.serviceDescription().description()
-        ))
+        return Mono.just(state)
+                .map(this::map)
+                .flatMap(bookingEntityRepository::save)
                 .then(Flux.fromStream(booking.popEvents().stream()
                         .map(e -> new EventEntity(
                                 e.id(),
@@ -54,17 +42,20 @@ public class MongoBookingRepository implements BookingRepository {
                         .flatMap(eventEntityRepository::save).then());
     }
 
-    @Override
-    public Mono<Page<Booking>> search(String text, Pageable pageable) {
-        if (text == null) {
-            text = "";
-        }
-        return bookingEntityRepository.findAllBySearchableTextContainingIgnoreCase(
-                text, pageable
-        ).map(this::mapEntityToBooking).collectList().map(l -> new PageImpl<>(l, pageable, l.size()));
+    private BookingEntity map(BookingState state) {
+        return new BookingEntity(
+                state.id().id(),
+                state.customerName().name(),
+                state.serviceDescription().description(),
+                state.startDate().date(),
+                state.endDate().date(),
+                state.value().value(),
+                state.status().name(),
+                state.customerName().name() + " " + state.serviceDescription().description()
+        );
     }
 
-    private Booking mapEntityToBooking(BookingEntity entity) {
+    private Booking map(BookingEntity entity) {
         return bookingFactory.ofState(new BookingState(
                 new BookingId(entity.id),
                 new CustomerName(entity.customerName),
@@ -81,6 +72,6 @@ public class MongoBookingRepository implements BookingRepository {
         if (bookingId == null) {
             throw new IllegalArgumentException("Booking id cannot be null");
         }
-        return bookingEntityRepository.findById(bookingId.id()).map(this::mapEntityToBooking);
+        return bookingEntityRepository.findById(bookingId.id()).map(this::map);
     }
 }

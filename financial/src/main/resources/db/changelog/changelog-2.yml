@@ -4,11 +4,23 @@ databaseChangeLog:
       author: Liquibase
       changes:
         - createTable:
-            tableName: test_table2
+            tableName: event
             columns:
               - column:
-                  name: test_column
-                  type: INT
+                  name: id
+                  type: varchar(255)
                   constraints:
                     primaryKey:  true
                     nullable:  false
+              - column:
+                  name: source
+                  type: varchar(512)
+              - column:
+                  name: _when
+                  type: datetime
+              - column:
+                  name: payload
+                  type: text
+              - column:
+                  name: status
+                  type: varchar(64)

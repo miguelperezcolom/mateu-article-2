@@ -28,12 +28,12 @@
     </scm>
     <properties>
         <java.version>17</java.version>
-        <spring-cloud.version>2024.0.0-RC1</spring-cloud.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.kafka</groupId>
@@ -47,15 +47,14 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-kafka-streams</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>r2dbc-postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -77,6 +76,36 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-test-binder</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.mateu.article2</groupId>
+            <artifactId>shared</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+        </dependency>
+        <dependency>
+            <!-- Use org.jooq                for the Open Source Edition
+                     org.jooq.pro            for commercial editions with Java 17 support,
+                     org.jooq.pro-java-11    for commercial editions with Java 11 support,
+                     org.jooq.pro-java-8     for commercial editions with Java 8 support,
+                     org.jooq.trial          for the free trial edition with Java 17 support,
+                     org.jooq.trial-java-11  for the free trial edition with Java 11 support,
+                     org.jooq.trial-java-8   for the free trial edition with Java 8 support
+
+             Note: Only the Open Source Edition is hosted on Maven Central.
+                   Install the others locally using the provided scripts, or access them from here: https://repo.jooq.org
+                   See the JDK version support matrix here: https://www.jooq.org/download/support-matrix-jdk -->
+
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta-extensions-liquibase</artifactId>
+            <version>3.19.15</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -103,6 +132,101 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <!--
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.30.0</version>
+                <configuration>
+                    <changeLogDirectory>src/main/resources/db/changelog</changeLogDirectory>
+                    <changeLogFile>db.changelog-master.yaml</changeLogFile>
+                    <url>jdbc:postgresql://localhost:5432/dev</url>
+                    <username>dev</username>
+                    <password>dev</password>
+                </configuration>
+            </plugin>
+            -->
+            <plugin>
+                <!-- Specify the maven code generator plugin -->
+                <!-- Use org.jooq                for the Open Source Edition
+                         org.jooq.pro            for commercial editions with Java 17 support,
+                         org.jooq.pro-java-11    for commercial editions with Java 11 support,
+                         org.jooq.pro-java-8     for commercial editions with Java 8 support,
+                         org.jooq.trial          for the free trial edition with Java 17 support,
+                         org.jooq.trial-java-11  for the free trial edition with Java 11 support,
+                         org.jooq.trial-java-8   for the free trial edition with Java 8 support
+
+                 Note: Only the Open Source Edition is hosted on Maven Central.
+                       Install the others locally using the provided scripts, or access them from here: https://repo.jooq.org
+                       See the JDK version support matrix here: https://www.jooq.org/download/support-matrix-jdk -->
+
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.19.15</version>
+
+                <executions>
+                    <execution>
+                        <id>jooq-codegen</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <generator>
+                        <database>
+                            <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
+                            <properties>
+
+                                <!-- Specify the root path, e.g. a path in your Maven directory layout -->
+                                <property>
+                                    <key>rootPath</key>
+                                    <value>${basedir}/src/main/resources</value>
+                                </property>
+
+                                <!-- Specify the classpath location of your XML, YAML, or JSON script. -->
+                                <property>
+                                    <key>scripts</key>
+                                    <value>db/changelog/db.changelog-master.yaml</value>
+                                </property>
+
+                                <!-- Whether you want to include liquibase tables in generated output
+
+                                     - false (default)
+                                     - true: includes DATABASECHANGELOG and DATABASECHANGELOGLOCK tables -->
+                                <property>
+                                    <key>includeLiquibaseTables</key>
+                                    <value>false</value>
+                                </property>
+
+
+
+                                <!-- Properties prefixed "database." will be passed on to the liquibase.database.Database class
+                                     if a matching setter is found -->
+                                <property>
+                                    <key>database.liquibaseSchemaName</key>
+                                    <value>lb</value>
+                                </property>
+
+                                <!-- The property "changeLogParameters.contexts" will be passed on to the
+                                     liquibase.database.Database.update() call (jOOQ 3.13.2+).
+                                     See https://www.liquibase.org/documentation/contexts.html -->
+                                <property>
+                                    <key>changeLogParameters.contexts</key>
+                                    <value>!test</value>
+                                </property>
+
+                            </properties>
+                        </database>
+                        <target>
+                            <packageName>io.mateu.article2.cqrssink.infra.secondary.jooq.model</packageName>
+                            <directory>${basedir}/src/main/java</directory>
+                        </target>
+                    </generator>
                 </configuration>
             </plugin>
         </plugins>

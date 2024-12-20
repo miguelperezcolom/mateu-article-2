@@ -1,14 +1,20 @@
 package io.mateu.article2.financial.invoice.domain.invoice;
 
-import io.mateu.article2.financial.invoice.domain.invoice.valueobjects.BookingId;
-import io.mateu.article2.financial.invoice.domain.invoice.valueobjects.InvoiceDate;
-import io.mateu.article2.financial.invoice.domain.invoice.valueobjects.InvoiceId;
-import io.mateu.article2.financial.invoice.domain.invoice.valueobjects.InvoiceValue;
+import io.mateu.article2.shared.domain.AggregateRoot;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
-public record Invoice(
-        InvoiceId id,
-        BookingId bookingId,
-        InvoiceDate date,
-        InvoiceValue value
-) {
+@Service
+@Scope("prototype")
+public class Invoice extends AggregateRoot {
+
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
+    private InvoiceState state;
+
+
+
 }

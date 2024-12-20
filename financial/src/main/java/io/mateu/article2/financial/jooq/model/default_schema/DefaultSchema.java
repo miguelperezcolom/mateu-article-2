@@ -5,11 +5,10 @@ package io.mateu.article2.financial.jooq.model.default_schema;
 
 
 import io.mateu.article2.financial.jooq.model.DefaultCatalog;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable2;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable3;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable4;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable5;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Booking;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Event;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Invoice;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Payment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,29 +32,24 @@ public class DefaultSchema extends SchemaImpl {
     public static final DefaultSchema DEFAULT_SCHEMA = new DefaultSchema();
 
     /**
-     * The table <code>TEST_TABLE</code>.
+     * The table <code>BOOKING</code>.
      */
-    public final TestTable TEST_TABLE = TestTable.TEST_TABLE;
+    public final Booking BOOKING = Booking.BOOKING;
 
     /**
-     * The table <code>TEST_TABLE2</code>.
+     * The table <code>EVENT</code>.
      */
-    public final TestTable2 TEST_TABLE2 = TestTable2.TEST_TABLE2;
+    public final Event EVENT = Event.EVENT;
 
     /**
-     * The table <code>TEST_TABLE3</code>.
+     * The table <code>INVOICE</code>.
      */
-    public final TestTable3 TEST_TABLE3 = TestTable3.TEST_TABLE3;
+    public final Invoice INVOICE = Invoice.INVOICE;
 
     /**
-     * The table <code>TEST_TABLE4</code>.
+     * The table <code>PAYMENT</code>.
      */
-    public final TestTable4 TEST_TABLE4 = TestTable4.TEST_TABLE4;
-
-    /**
-     * The table <code>TEST_TABLE5</code>.
-     */
-    public final TestTable5 TEST_TABLE5 = TestTable5.TEST_TABLE5;
+    public final Payment PAYMENT = Payment.PAYMENT;
 
     /**
      * No further instances allowed
@@ -73,11 +67,10 @@ public class DefaultSchema extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            TestTable.TEST_TABLE,
-            TestTable2.TEST_TABLE2,
-            TestTable3.TEST_TABLE3,
-            TestTable4.TEST_TABLE4,
-            TestTable5.TEST_TABLE5
+            Booking.BOOKING,
+            Event.EVENT,
+            Invoice.INVOICE,
+            Payment.PAYMENT
         );
     }
 }

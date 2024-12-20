@@ -4,16 +4,14 @@
 package io.mateu.article2.financial.jooq.model.default_schema;
 
 
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable2;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable3;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable4;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable5;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.records.TestTable2Record;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.records.TestTable3Record;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.records.TestTable4Record;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.records.TestTable5Record;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.records.TestTableRecord;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Booking;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Event;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Invoice;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Payment;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.records.BookingRecord;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.records.EventRecord;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.records.InvoiceRecord;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.records.PaymentRecord;
 
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -32,9 +30,8 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<TestTableRecord> PK_TEST_TABLE = Internal.createUniqueKey(TestTable.TEST_TABLE, DSL.name("PK_TEST_TABLE"), new TableField[] { TestTable.TEST_TABLE.TEST_COLUMN }, true);
-    public static final UniqueKey<TestTable2Record> PK_TEST_TABLE2 = Internal.createUniqueKey(TestTable2.TEST_TABLE2, DSL.name("PK_TEST_TABLE2"), new TableField[] { TestTable2.TEST_TABLE2.TEST_COLUMN }, true);
-    public static final UniqueKey<TestTable3Record> PK_TEST_TABLE3 = Internal.createUniqueKey(TestTable3.TEST_TABLE3, DSL.name("PK_TEST_TABLE3"), new TableField[] { TestTable3.TEST_TABLE3.TEST_COLUMN }, true);
-    public static final UniqueKey<TestTable4Record> PK_TEST_TABLE4 = Internal.createUniqueKey(TestTable4.TEST_TABLE4, DSL.name("PK_TEST_TABLE4"), new TableField[] { TestTable4.TEST_TABLE4.TEST_COLUMN }, true);
-    public static final UniqueKey<TestTable5Record> PK_TEST_TABLE5 = Internal.createUniqueKey(TestTable5.TEST_TABLE5, DSL.name("PK_TEST_TABLE5"), new TableField[] { TestTable5.TEST_TABLE5.TEST_COLUMN }, true);
+    public static final UniqueKey<BookingRecord> PK_BOOKING = Internal.createUniqueKey(Booking.BOOKING, DSL.name("PK_BOOKING"), new TableField[] { Booking.BOOKING.ID }, true);
+    public static final UniqueKey<EventRecord> PK_EVENT = Internal.createUniqueKey(Event.EVENT, DSL.name("PK_EVENT"), new TableField[] { Event.EVENT.ID }, true);
+    public static final UniqueKey<InvoiceRecord> PK_INVOICE = Internal.createUniqueKey(Invoice.INVOICE, DSL.name("PK_INVOICE"), new TableField[] { Invoice.INVOICE.ID }, true);
+    public static final UniqueKey<PaymentRecord> PK_PAYMENT = Internal.createUniqueKey(Payment.PAYMENT, DSL.name("PK_PAYMENT"), new TableField[] { Payment.PAYMENT.ID }, true);
 }

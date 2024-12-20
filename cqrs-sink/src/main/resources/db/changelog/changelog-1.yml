@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Liquibase
+      changes:
+        - createTable:
+            tableName: booking
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name: customer
+                  type: varchar(512)
+              - column:
+                  name: service
+                  type: varchar(512)
+              - column:
+                  name: start_date
+                  type: varchar(32)
+              - column:
+                  name: end_date
+                  type: varchar(32)
+              - column:
+                  name: value
+                  type: decimal(12,3)
+              - column:
+                  name: status
+                  type: varchar(64)
+              - column:
+                  name: invoiced
+                  type: decimal(12,3)
+              - column:
+                  name: paid
+                  type: decimal(12,3)
+              - column:
+                  name: searchable_text
+                  type: text

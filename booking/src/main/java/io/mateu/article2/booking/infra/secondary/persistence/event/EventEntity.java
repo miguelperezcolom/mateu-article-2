@@ -1,5 +1,6 @@
 package io.mateu.article2.booking.infra.secondary.persistence.event;
 
+import io.mateu.article2.shared.events.EventProcessingStatus;
 import io.mateu.article2.shared.events.Payload;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;

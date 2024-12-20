@@ -4,11 +4,50 @@ databaseChangeLog:
       author: Liquibase
       changes:
         - createTable:
-            tableName: test_table
+            tableName: booking
             columns:
               - column:
-                  name: test_column
-                  type: INT
+                  name: id
+                  type: varchar(255)
                   constraints:
                     primaryKey:  true
                     nullable:  false
+              - column:
+                  name: _value
+                  type: decimal(12,3)
+        - createTable:
+            tableName: invoice
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name: booking_id
+                  type: varchar(255)
+              - column:
+                  name: _date
+                  type: date
+              - column:
+                  name: _value
+                  type: decimal(12,3)
+        - createTable:
+            tableName: payment
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name: booking_id
+                  type: varchar(255)
+              - column:
+                  name: _date
+                  type: date
+              - column:
+                  name: _value
+                  type: decimal(12,3)

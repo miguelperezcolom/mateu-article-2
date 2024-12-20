@@ -4,11 +4,10 @@
 package io.mateu.article2.financial.jooq.model.default_schema;
 
 
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable2;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable3;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable4;
-import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable5;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Booking;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Event;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Invoice;
+import io.mateu.article2.financial.jooq.model.default_schema.tables.Payment;
 
 
 /**
@@ -18,27 +17,22 @@ import io.mateu.article2.financial.jooq.model.default_schema.tables.TestTable5;
 public class Tables {
 
     /**
-     * The table <code>TEST_TABLE</code>.
+     * The table <code>BOOKING</code>.
      */
-    public static final TestTable TEST_TABLE = TestTable.TEST_TABLE;
+    public static final Booking BOOKING = Booking.BOOKING;
 
     /**
-     * The table <code>TEST_TABLE2</code>.
+     * The table <code>EVENT</code>.
      */
-    public static final TestTable2 TEST_TABLE2 = TestTable2.TEST_TABLE2;
+    public static final Event EVENT = Event.EVENT;
 
     /**
-     * The table <code>TEST_TABLE3</code>.
+     * The table <code>INVOICE</code>.
      */
-    public static final TestTable3 TEST_TABLE3 = TestTable3.TEST_TABLE3;
+    public static final Invoice INVOICE = Invoice.INVOICE;
 
     /**
-     * The table <code>TEST_TABLE4</code>.
+     * The table <code>PAYMENT</code>.
      */
-    public static final TestTable4 TEST_TABLE4 = TestTable4.TEST_TABLE4;
-
-    /**
-     * The table <code>TEST_TABLE5</code>.
-     */
-    public static final TestTable5 TEST_TABLE5 = TestTable5.TEST_TABLE5;
+    public static final Payment PAYMENT = Payment.PAYMENT;
 }

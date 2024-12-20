@@ -11,6 +11,10 @@ spring:
     password: dev
     pool:
       enabled: true
+  liquibase:
+    url: jdbc:mariadb://localhost:3306/dev
+    password: dev
+    user: dev
   application:
     name: financial
   kafka:
@@ -18,7 +22,7 @@ spring:
       - http://localhost:9092
   cloud:
     function:
-      definition: consumeAll
+      definition: consumeAllForInvoice;consumeAllForBooking
     stream:
       kafka:
         binder:
@@ -26,23 +30,29 @@ spring:
             - http://localhost:9092
       function:
         bindings:
-          consumeAll-in-0: input
+          consumeAllForBooking-in-0: input-booking
+          consumeAllForInvoice-in-0: input-invoice
       bindings:
-        input:
+        input-booking:
           destination: xx
-          group: financial
+          group: financial-booking
+        input-invoice:
+          destination: xx
+          group: financial-invoice
         output:
           destination: xx
   logging:
     level:
       org.springframework.cloud.stream: INFO
-      org.mongodb: INFO
+      org:
+        jooq:
+          tools:
+            LoggerListener: debug
   jooq:
     sql-dialect: mariadb
 logging:
   level:
     org:
       jooq:
-        Constants: WARN
         tools:
-          LoggerListener: DEBUG
+          LoggerListener: debug

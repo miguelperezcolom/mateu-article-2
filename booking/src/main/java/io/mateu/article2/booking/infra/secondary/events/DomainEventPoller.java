@@ -3,7 +3,7 @@ package io.mateu.article2.booking.infra.secondary.events;
 import io.mateu.article2.booking.domain.ports.output.EventBus;
 import io.mateu.article2.booking.infra.secondary.persistence.event.EventEntity;
 import io.mateu.article2.booking.infra.secondary.persistence.event.EventEntityRepository;
-import io.mateu.article2.booking.infra.secondary.persistence.event.EventProcessingStatus;
+import io.mateu.article2.shared.events.EventProcessingStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,9 @@ public class DomainEventPoller {
         pollAndSend().blockLast();
     }
 
+    /*
+    todo: needs to be moved to another micro service, which can have 1 replica only, as mongodb does not support select for update
+     */
     @Transactional
     protected Flux<EventEntity> pollAndSend() {
         return eventEntityRepository.findAllByProcessingStatus(EventProcessingStatus.Pending)

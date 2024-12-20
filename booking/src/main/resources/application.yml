@@ -3,6 +3,12 @@ server:
 spring:
   application:
     name: booking
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/dev
+    username: dev
+    password: dev
+    pool:
+      enabled: true
   mongodb:
     database: booking
   kafka:
@@ -29,4 +35,14 @@ spring:
     level:
       org.springframework.cloud.stream: INFO
       org.mongodb: INFO
-
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc: DEBUG
+          mongodb:
+            core:
+              ReactiveMongoTemplate: DEBUG
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters

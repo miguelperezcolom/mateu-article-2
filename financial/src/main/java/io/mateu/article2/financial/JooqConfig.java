@@ -26,6 +26,7 @@ class JooqConfig {
                 SQLDialect.MARIADB
         );
         dsl.settings().withRenderNameStyle(RenderNameStyle.LOWER);
+            dsl.settings().setExecuteLogging(true);
             return dsl;
         }
 }
