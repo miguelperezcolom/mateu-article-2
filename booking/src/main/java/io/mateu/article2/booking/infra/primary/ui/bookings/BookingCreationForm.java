@@ -4,6 +4,7 @@ import io.mateu.article2.booking.application.createbooking.CreateBookingRequest;
 import io.mateu.article2.booking.application.createbooking.CreateBookingUseCase;
 import io.mateu.uidl.annotations.Ignored;
 import io.mateu.uidl.annotations.MainAction;
+import io.mateu.uidl.annotations.RequestFocus;
 import io.mateu.uidl.data.Destination;
 import io.mateu.uidl.data.DestinationType;
 import io.mateu.uidl.data.Result;
@@ -31,6 +32,7 @@ public class BookingCreationForm {
     String id = UUID.randomUUID().toString();
 
     @NotEmpty
+    @RequestFocus
     String customerName;
 
     @NotNull
