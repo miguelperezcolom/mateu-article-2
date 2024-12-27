@@ -1,0 +1,46 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/prod
+    username: prod
+    password: prod
+    pool:
+      enabled: true
+  application:
+    name: cqrs-sink
+  kafka:
+    bootstrap-servers:
+      - http://kafka:9092
+  cloud:
+    function:
+      definition: consumeAll
+    stream:
+      kafka:
+        binder:
+          brokers:
+            - http://kafka:9092
+      function:
+        bindings:
+          consumeAll-in-0: input
+      bindings:
+        input:
+          destination: xx
+          group: cqrs-sink
+        output:
+          destination: xx
+  logging:
+    level:
+      org.springframework.cloud.stream: INFO
+      org.mongodb: INFO
+  jooq:
+    sql-dialect: postgres
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+      jooq:
+        Constants: WARN
+        tools:
+          LoggerListener: DEBUG

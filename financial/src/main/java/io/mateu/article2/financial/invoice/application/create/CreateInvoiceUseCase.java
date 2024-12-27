@@ -25,7 +25,7 @@ public class CreateInvoiceUseCase {
                         r.date(),
                         r.value()
                 ))
-                .map(invoiceFactory::ofState)
+                .map(invoiceFactory::create)
                 .flatMap(invoiceRepository::save);
     }
 

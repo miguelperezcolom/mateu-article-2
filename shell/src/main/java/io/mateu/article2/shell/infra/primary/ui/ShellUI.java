@@ -3,15 +3,15 @@ package io.mateu.article2.shell.infra.primary.ui;
 
 import io.mateu.uidl.annotations.*;
 import io.mateu.uidl.data.RemoteMenu;
+import io.mateu.uidl.interfaces.HasLogo;
 import io.mateu.uidl.interfaces.Icon;
 
 @MateuUI("")                                        // (1)
 @PageTitle("Mateu's booking system")
 @Title("Home")
 @AppTitle("My booking system")
-@AppIcon(Icon.Airplane)
 @FavIcon("/mateu-favicon.png")
-public class ShellUI extends Home {
+public class ShellUI extends Home implements HasLogo {
 
 
     @MenuOption                                     // (2)
@@ -31,4 +31,8 @@ public class ShellUI extends Home {
             "financial"                             // Menu id
     );
 
+    @Override
+    public String getLogoUrl() {
+        return "/mateu-favicon.png";
+    }
 }

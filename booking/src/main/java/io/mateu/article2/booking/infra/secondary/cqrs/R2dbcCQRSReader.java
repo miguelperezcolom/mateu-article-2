@@ -7,11 +7,15 @@ import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class R2dbcCQRSReader implements CQRSReader {
@@ -42,7 +46,10 @@ public class R2dbcCQRSReader implements CQRSReader {
                                 "value, " +
                                 "invoiced, " +
                                 "paid " +
-                                "FROM booking WHERE searchable_text ilike (:text)")
+                                "FROM booking WHERE searchable_text ilike (:text) " +
+                                buildOrderClause(pageable.getSort()) +
+                                "offset " + pageable.getOffset() + " " +
+                                "limit " + pageable.toLimit().max() + " ")
                         .bind("text", text).map(r -> {
                             int col = 0;
                             return new ListedBooking(
@@ -60,5 +67,24 @@ public class R2dbcCQRSReader implements CQRSReader {
                         z.getT2(),
                         pageable, z.getT1()
                 ));
+    }
+
+    private String buildOrderClause(Sort sort) {
+        List<Sort.Order> orders = new ArrayList<>();
+        if (sort != null) {
+            orders.addAll(sort.stream().toList());
+        }
+        orders.add(Sort.Order.asc("id"));
+        return "order by " + orders.stream().map(this::mapProperty).collect(Collectors.joining(", "));
+    }
+
+    private String mapProperty(Sort.Order sort) {
+        return switch (sort.getProperty()) {
+            case "serviceDescription" -> "service";
+            case "startDate" -> "start_date";
+            case "endDate" -> "end_date";
+            case "status" -> "status";
+            default -> sort.getProperty();
+        } + " " + sort.getDirection() + " ";
     }
 }

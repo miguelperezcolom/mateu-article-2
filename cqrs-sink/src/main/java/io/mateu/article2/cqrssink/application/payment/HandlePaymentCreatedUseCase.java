@@ -21,7 +21,7 @@ public class HandlePaymentCreatedUseCase {
             record = context.newRecord(Booking.BOOKING);
             record.setId(event.bookingId());
         }
-        record.setPaid(event.value().add(record.getPaid()));
+        record.setPaid(record.getPaid() == null?event.value():event.value().add(record.getPaid()));
         record.store();
     }
 

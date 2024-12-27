@@ -1,27 +1,38 @@
 package io.mateu.article2.booking.infra.primary.ui.bookings;
 
+import io.mateu.article2.booking.application.createrandombookings.CreateRandomBookingsRequest;
+import io.mateu.article2.booking.application.createrandombookings.CreateRandomBookingsUseCase;
 import io.mateu.article2.booking.application.searchbookings.SearchBookingUseCase;
 import io.mateu.article2.booking.domain.booking.valueobjects.BookingStatus;
-import io.mateu.uidl.annotations.Money;
-import io.mateu.uidl.annotations.Title;
-import io.mateu.uidl.annotations.Width;
+import io.mateu.uidl.annotations.*;
+import io.mateu.uidl.data.*;
 import io.mateu.uidl.data.Status;
-import io.mateu.uidl.data.StatusType;
+import io.mateu.uidl.interfaces.ActionHandler;
 import io.mateu.uidl.interfaces.Crud;
+import io.mateu.uidl.interfaces.Message;
+import io.mateu.uidl.interfaces.ResponseWrapper;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 
 record BookingRow(
         String id,
+        @Sortable(serverSide = true)
         String customer,
         @Width("140px")
+        @Sortable(serverSide = true)
         String startDate,
         @Width("140px")
         String endDate,
@@ -29,7 +40,11 @@ record BookingRow(
         @Width("100px")
         Status status,
         @Money
-        BigDecimal value) {
+        BigDecimal value,
+        @Money
+        BigDecimal invoiced,
+        @Money
+        BigDecimal paid) {
 }
 
 record BookingFilters() {
@@ -44,11 +59,13 @@ public class BookingCrud implements Crud<BookingFilters, BookingRow> {
     final BookingView bookingView;
     final BookingCreationForm bookingCreationForm;
     final SearchBookingUseCase searchBookingUseCase;
+    final CreateRandomBookingsUseCase createRandomBookingsUseCase;
 
-    public BookingCrud(BookingView bookingView, BookingCreationForm bookingCreationForm, SearchBookingUseCase searchBookingUseCase) {
+    public BookingCrud(BookingView bookingView, BookingCreationForm bookingCreationForm, SearchBookingUseCase searchBookingUseCase, CreateRandomBookingsUseCase createRandomBookingsUseCase) {
         this.bookingView = bookingView;
         this.bookingCreationForm = bookingCreationForm;
         this.searchBookingUseCase = searchBookingUseCase;
+        this.createRandomBookingsUseCase = createRandomBookingsUseCase;
     }
 
     @Override
@@ -62,7 +79,9 @@ public class BookingCrud implements Crud<BookingFilters, BookingRow> {
                                 b.endDate(),
                                 b.serviceDescription(),
                                 new Status(getStatusType(BookingStatus.valueOf(b.status())), b.status()),
-                                b.value()
+                                b.value(),
+                                b.invoiced(),
+                                b.paid()
                         )).toList()
                         , p.getPageable(), p.getTotalElements()));
     }
@@ -89,5 +108,12 @@ public class BookingCrud implements Crud<BookingFilters, BookingRow> {
     @Override
     public String getCaptionForNew() {
         return "Create booking";
+    }
+
+    @Action(target = ActionTarget.NewModal)
+    public Mono<CloseModal> createRandomBookings(@Min(1)@Max(500)@Help("Max 500") int quantity) {
+        return createRandomBookingsUseCase.createBookings(new CreateRandomBookingsRequest(quantity))
+                .flatMap(s -> Mono.just(new CloseModal(this, ActionTarget.View))
+                        .delayElement(Duration.ofSeconds(3)));
     }
 }

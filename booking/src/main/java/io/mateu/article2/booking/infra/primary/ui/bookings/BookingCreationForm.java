@@ -2,6 +2,7 @@ package io.mateu.article2.booking.infra.primary.ui.bookings;
 
 import io.mateu.article2.booking.application.createbooking.CreateBookingRequest;
 import io.mateu.article2.booking.application.createbooking.CreateBookingUseCase;
+import io.mateu.uidl.annotations.Help;
 import io.mateu.uidl.annotations.Ignored;
 import io.mateu.uidl.annotations.MainAction;
 import io.mateu.uidl.annotations.RequestFocus;
@@ -42,6 +43,7 @@ public class BookingCreationForm {
     LocalDate endDate;
 
     @NotEmpty
+            @Help("E.g. Hotel Cala Bona, Transfer Hotel -> Airport, ...")
     String serviceDescription;
 
     @NotNull

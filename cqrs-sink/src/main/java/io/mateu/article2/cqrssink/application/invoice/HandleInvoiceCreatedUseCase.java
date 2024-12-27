@@ -21,7 +21,7 @@ public class HandleInvoiceCreatedUseCase {
             record = context.newRecord(Booking.BOOKING);
             record.setId(event.bookingId());
         }
-        record.setInvoiced(event.value().add(record.getInvoiced()));
+        record.setInvoiced(record.getInvoiced() == null?event.value():event.value().add(record.getInvoiced()));
         record.store();
     }
 
