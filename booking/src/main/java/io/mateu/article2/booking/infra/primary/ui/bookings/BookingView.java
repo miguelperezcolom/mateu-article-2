@@ -6,13 +6,34 @@ import io.mateu.article2.booking.application.findbooking.FindBookingRequest;
 import io.mateu.article2.booking.application.findbooking.FindBookingUseCase;
 import io.mateu.article2.booking.application.savebooking.SaveBookingRequest;
 import io.mateu.article2.booking.application.savebooking.SaveBookingUseCase;
-import io.mateu.article2.booking.domain.booking.valueobjects.*;
-import io.mateu.uidl.annotations.*;
-import io.mateu.uidl.data.*;
+import io.mateu.article2.booking.domain.booking.valueobjects.BookingEndDate;
+import io.mateu.article2.booking.domain.booking.valueobjects.BookingId;
+import io.mateu.article2.booking.domain.booking.valueobjects.BookingStartDate;
+import io.mateu.article2.booking.domain.booking.valueobjects.BookingStatus;
+import io.mateu.article2.booking.domain.booking.valueobjects.BookingValue;
+import io.mateu.article2.booking.domain.booking.valueobjects.CustomerName;
+import io.mateu.article2.booking.domain.booking.valueobjects.ServiceDescription;
+import io.mateu.uidl.annotations.ActionPosition;
+import io.mateu.uidl.annotations.ActionTarget;
+import io.mateu.uidl.annotations.ActionThemeVariant;
+import io.mateu.uidl.annotations.ActionType;
+import io.mateu.uidl.annotations.HorizontalLayouted;
+import io.mateu.uidl.annotations.Ignored;
+import io.mateu.uidl.annotations.MainAction;
+import io.mateu.uidl.annotations.RequestFocus;
+import io.mateu.uidl.annotations.Title;
+import io.mateu.uidl.annotations.Width;
+import io.mateu.uidl.data.Destination;
+import io.mateu.uidl.data.DestinationType;
+import io.mateu.uidl.data.Result;
+import io.mateu.uidl.data.ResultType;
 import io.mateu.uidl.data.Status;
+import io.mateu.uidl.data.StatusType;
 import io.mateu.uidl.interfaces.ActionHandler;
+import io.mateu.uidl.interfaces.Container;
 import io.mateu.uidl.interfaces.HasStatus;
-import io.mateu.uidl.interfaces.View;
+import io.mateu.uidl.interfaces.MicroFrontend;
+import io.mateu.uidl.interfaces.UpdatesHash;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.ApplicationContext;
@@ -23,9 +44,10 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-@Title("")
 @Service
 @Scope("prototype")
 class BookingInfoSection implements HasStatus, ActionHandler {
@@ -35,10 +57,11 @@ class BookingInfoSection implements HasStatus, ActionHandler {
     private final SaveBookingUseCase saveBookingUseCase;
 
 
-    @Ignored String id;
+    @Ignored
+    String id;
     @Ignored Status status;
     @NotEmpty
-            @RequestFocus
+    @RequestFocus
     String leadName;
     @NotEmpty
     String service;
@@ -107,29 +130,26 @@ class BookingInfoSection implements HasStatus, ActionHandler {
             return applicationContext.getBean(BookingView.class).load(actionId);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Booking " + id;
+    }
 }
-
-@Title("")
-record MyHorizontalLayout(
-        BookingInfoSection bookingInfoSection,
-        @Width("500px")
-        RemoteJourney financialReport) {
-
-}
-
 
 @Service
 @Scope("prototype")
-public class BookingView implements View {
+public class BookingView implements Container, UpdatesHash {
 
+    @Ignored
     private final FindBookingUseCase findBookingUseCase;
+    @Ignored
     private final BookingInfoSection bookingInfoSection;
     @Ignored
     String id;
 
-    @Slot(SlotName.main)
-            @HorizontalLayout
-    MyHorizontalLayout main;
+    @HorizontalLayouted
+    List content = null;
 
     public BookingView(FindBookingUseCase findBookingUseCase, BookingInfoSection bookingInfoSection) {
         this.findBookingUseCase = findBookingUseCase;
@@ -138,14 +158,6 @@ public class BookingView implements View {
 
     public Mono<BookingView> load(String id) {
         this.id = id;
-
-        var financialSection = new RemoteJourney(
-                "/financial/mateu/v3",
-                "io.mateu.article2.financial.shared.infra.primary.ui.FinancialUI",
-                "financial_bookingReport",
-                "{\"bookingId\":\"" + id + "\"}");
-
-        main = new MyHorizontalLayout(bookingInfoSection, financialSection);
 
         return findBookingUseCase.handle(new FindBookingRequest(new BookingId(id)))
                 .map(i -> {
@@ -157,6 +169,13 @@ public class BookingView implements View {
                     bookingInfoSection.serviceStartDate = i.serviceStartDate();
                     bookingInfoSection.serviceEndDate = i.serviceEndDate();
                     bookingInfoSection.value = i.value();
+
+                    content = List.of(
+                            bookingInfoSection,
+                            new MicroFrontend(
+                                    "/financial/bookingreport",
+                                    Map.of("id", id))
+                            );
 
                     return i;
                 }).then(Mono.just(this));
@@ -172,5 +191,10 @@ public class BookingView implements View {
     @Override
     public String toString() {
         return "Booking " + id;
+    }
+
+    @Override
+    public String getHash() {
+        return id;
     }
 }

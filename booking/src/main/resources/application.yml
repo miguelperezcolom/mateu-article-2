@@ -9,8 +9,9 @@ spring:
     password: dev
     pool:
       enabled: true
-  mongodb:
-    database: booking
+  data:
+    mongodb:
+      database: booking
   kafka:
     bootstrap-servers:
       - http://localhost:9092

@@ -10,29 +10,19 @@ import io.mateu.uidl.interfaces.Icon;
 @PageTitle("Mateu's booking system")
 @Title("Home")
 @AppTitle("My booking system")
-@FavIcon("/mateu-favicon.png")
+@FavIcon("/images/mateu-favicon.png")
 public class ShellUI extends Home implements HasLogo {
 
 
-    @MenuOption                                     // (2)
-    RemoteMenu booking = new RemoteMenu(
-            "booking/mateu/v3",        // Api path
-            "io.mateu.article2.booking." +
-                    "infra.primary.ui.BookingUI",   // UI id
-            "booking"                               // Menu id
-    );
+    @MenuOption(remote = true)                                     // (2)
+    String booking = "booking";
 
 
-    @MenuOption                                     // (3)
-    RemoteMenu financial = new RemoteMenu(
-            "financial/mateu/v3",      // Api path
-            "io.mateu.article2.financial.shared." +
-                    "infra.primary.ui.FinancialUI", // UI id
-            "financial"                             // Menu id
-    );
+    @MenuOption(remote = true)                                     // (2)
+    String financial = "financial";
 
     @Override
     public String getLogoUrl() {
-        return "/mateu-favicon.png";
+        return "/images/mateu-favicon.png";
     }
 }

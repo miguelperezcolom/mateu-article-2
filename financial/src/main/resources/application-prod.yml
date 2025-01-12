@@ -6,20 +6,24 @@ spring:
 #    username: dev
 #    password: dev
   r2dbc:
-    url: r2dbc:mariadb://mariadb:3306/prod
-    username: prod
-    password: prod
+    url: r2dbc:mariadb://maria-mariadb.default.svc.cluster.local:3306/my_database
+    username: root
+    password: 2dKqMyIlHH
     pool:
       enabled: true
   liquibase:
-    url: jdbc:mariadb://mariadb:3306/prod
-    password: prod
-    user: prod
+    url: jdbc:mariadb://maria-mariadb.default.svc.cluster.local:3306/my_database
+    user: root
+    password: 2dKqMyIlHH
   application:
     name: financial
   kafka:
     bootstrap-servers:
-      - http://kafka:9092
+      - http://kafka.default.svc.cluster.local:9092
+    properties:
+      security.protocol: SASL_PLAINTEXT
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="user1" password="CAachaB7ZA";
   cloud:
     function:
       definition: consumeAllForInvoice;consumeAllForBooking

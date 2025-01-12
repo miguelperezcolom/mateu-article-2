@@ -1,0 +1,61 @@
+GET http://localhost:8083/financial
+
+####
+
+GET https://article2.mateu.io/financial
+
+
+####
+
+
+# curl 'https://article2.mateu.io/financial/mateu/v3/ui'
+#  -X 'OPTIONS'
+#  -H 'accept: */*'
+#  -H 'accept-language: es-ES,es;q=0.9,en;q=0.8'
+#  -H 'access-control-request-headers: authorization,x-session-id'
+#  -H 'access-control-request-method: GET'
+#  -H 'origin: http://localhost:8080'
+#  -H 'priority: u=1, i'
+#  -H 'referer: http://localhost:8080/'
+#  -H 'sec-fetch-dest: empty'
+#  -H 'sec-fetch-mode: cors'
+#  -H 'sec-fetch-site: cross-site'
+#  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+OPTIONS https://article2.mateu.io/financial/mateu/v3/ui
+accept: */*
+accept-language: es-ES,es;q=0.9,en;q=0.8
+access-control-request-headers: authorization,x-session-id
+access-control-request-method: GET
+origin: http://localhost:8080
+priority: u=1, i
+referer: http://localhost:8080/
+sec-fetch-dest: empty
+sec-fetch-mode: cors
+sec-fetch-site: cross-site
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+
+###
+
+OPTIONS http://localhost:8080/financial/mateu/v3/ui
+accept: */*
+accept-language: es-ES,es;q=0.9,en;q=0.8
+access-control-request-headers: authorization,x-session-id
+access-control-request-method: GET
+origin: http://localhost:8080
+priority: u=1, i
+referer: http://localhost:8080/
+sec-fetch-dest: empty
+sec-fetch-mode: cors
+sec-fetch-site: cross-site
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+
+####
+
+
+OPTIONS http://article2.mateu.io/financial/mateu/v3/ui
+origin: https://example.com
+access-control-request-method: GET
+
+####
+
+GET http://localhost:8090/financial/mateu/v3/ui

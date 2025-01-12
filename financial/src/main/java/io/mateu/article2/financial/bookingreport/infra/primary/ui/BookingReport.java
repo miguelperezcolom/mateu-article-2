@@ -76,7 +76,7 @@ public class BookingReport implements ConsumesContextData {
     @SneakyThrows
     @Override
     public void consume(Map<String, Object> context, ServerHttpRequest serverHttpRequest) {
-        var id = (String) context.getOrDefault("bookingId", "");
+        var id = (String) context.getOrDefault("id", "");
         load(id).toFuture().get();
     }
 }

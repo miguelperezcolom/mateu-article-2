@@ -42,14 +42,14 @@ public class CreateInvoiceForm {
     BigDecimal value;
 
     @SneakyThrows
-    @MainAction(target = ActionTarget.View)
-    Mono<CloseModal<BookingReport>> create() {
+    @MainAction(closeModalWindow = true)
+    Mono<BookingReport> create() {
         return createInvoiceUseCase.handle(new CreateInvoiceRequest(
                 new InvoiceId(UUID.randomUUID().toString()),
                 new BookingId(bookingId),
                 new InvoiceDate(date),
                 new InvoiceValue(value)
-        )).then(applicationContext.getBean(BookingReport.class).load(bookingId)).map(CloseModal::new);
+        )).then(applicationContext.getBean(BookingReport.class).load(bookingId));
     }
 
     public CreateInvoiceForm load(String bookingId) {

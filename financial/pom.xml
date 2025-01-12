@@ -75,7 +75,7 @@
         <dependency>
             <groupId>io.mateu</groupId>
             <artifactId>embedded-front</artifactId>
-            <version>0.0.1-MATEU</version>
+            <version>3.0-alpha.90</version>
         </dependency>
 
         <!-- -->

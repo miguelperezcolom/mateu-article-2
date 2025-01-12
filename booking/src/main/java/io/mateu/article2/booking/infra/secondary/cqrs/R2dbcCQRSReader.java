@@ -2,7 +2,6 @@ package io.mateu.article2.booking.infra.secondary.cqrs;
 
 import io.mateu.article2.booking.domain.ports.output.CQRSReader;
 import io.mateu.article2.booking.domain.ports.output.ListedBooking;
-import io.mateu.dtos.Listener;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -80,7 +79,7 @@ public class R2dbcCQRSReader implements CQRSReader {
 
     private String mapProperty(Sort.Order sort) {
         return switch (sort.getProperty()) {
-            case "serviceDescription" -> "service";
+            case "service" -> "service";
             case "startDate" -> "start_date";
             case "endDate" -> "end_date";
             case "status" -> "status";

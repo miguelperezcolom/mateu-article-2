@@ -7,10 +7,9 @@ import io.mateu.article2.booking.domain.booking.valueobjects.BookingStatus;
 import io.mateu.uidl.annotations.*;
 import io.mateu.uidl.data.*;
 import io.mateu.uidl.data.Status;
-import io.mateu.uidl.interfaces.ActionHandler;
+import io.mateu.uidl.interfaces.ConsumesHash;
 import io.mateu.uidl.interfaces.Crud;
-import io.mateu.uidl.interfaces.Message;
-import io.mateu.uidl.interfaces.ResponseWrapper;
+import io.mateu.uidl.interfaces.UpdatesHash;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.context.ApplicationContext;
@@ -54,7 +53,7 @@ record BookingFilters() {
 @Service
 @Scope("prototype")
 @Title("Bookings")
-public class BookingCrud implements Crud<BookingFilters, BookingRow> {
+public class BookingCrud implements Crud<BookingFilters, BookingRow>, ConsumesHash, UpdatesHash {
 
     final BookingView bookingView;
     final BookingCreationForm bookingCreationForm;
@@ -100,9 +99,8 @@ public class BookingCrud implements Crud<BookingFilters, BookingRow> {
     }
 
     @Override
-    public Object getDetail(BookingRow bookingRow) throws Throwable {
-        bookingView.load(bookingRow.id()).toFuture().get();
-        return bookingView;
+    public Mono<BookingView> getDetail(BookingRow bookingRow) throws Throwable {
+        return bookingView.load(bookingRow.id());
     }
 
     @Override
@@ -115,5 +113,21 @@ public class BookingCrud implements Crud<BookingFilters, BookingRow> {
         return createRandomBookingsUseCase.createBookings(new CreateRandomBookingsRequest(quantity))
                 .flatMap(s -> Mono.just(new CloseModal(this, ActionTarget.View))
                         .delayElement(Duration.ofSeconds(3)));
+    }
+
+    @Override
+    public Object consume(String urlFragment, ServerHttpRequest serverHttpRequest) {
+        if ("".equals(urlFragment)) {
+            return this;
+        }
+        if ("new".equals(urlFragment)) {
+            return bookingCreationForm;
+        }
+        return bookingView.load(urlFragment);
+    }
+
+    @Override
+    public String getHash() {
+        return "";
     }
 }

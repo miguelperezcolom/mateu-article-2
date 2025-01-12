@@ -39,14 +39,14 @@ public class RegisterPaymentForm {
     @NotNull
     BigDecimal value;
 
-    @MainAction(target = ActionTarget.View)
-    Mono<CloseModal<BookingReport>> create() {
+    @MainAction(closeModalWindow = true)
+    Mono<BookingReport> create() {
         return createPaymentUseCase.handle(new CreatePaymentRequest(
                 new PaymentId(UUID.randomUUID().toString()),
                 new BookingId(bookingId),
                 new PaymentDate(date),
                 new PaymentValue(value)
-        )).then(applicationContext.getBean(BookingReport.class).load(bookingId)).map(CloseModal::new);
+        )).then(applicationContext.getBean(BookingReport.class).load(bookingId));
     }
 
     public RegisterPaymentForm load(String bookingId) {

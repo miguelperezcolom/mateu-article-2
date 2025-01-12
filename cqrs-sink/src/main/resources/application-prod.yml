@@ -2,9 +2,9 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/prod
-    username: prod
-    password: prod
+    url: jdbc:postgresql://postgres-postgresql.default.svc.cluster.local:5432/prod
+    username: postgres
+    password: UeZVplt9D8
     pool:
       enabled: true
   application:
@@ -12,6 +12,10 @@ spring:
   kafka:
     bootstrap-servers:
       - http://kafka:9092
+    properties:
+      security.protocol: SASL_PLAINTEXT
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="user1" password="CAachaB7ZA";
   cloud:
     function:
       definition: consumeAll

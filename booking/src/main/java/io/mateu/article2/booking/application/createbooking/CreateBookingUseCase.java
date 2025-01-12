@@ -1,11 +1,9 @@
 package io.mateu.article2.booking.application.createbooking;
 
 import io.mateu.article2.booking.domain.booking.BookingFactory;
-import io.mateu.article2.booking.domain.booking.BookingState;
 import io.mateu.article2.booking.domain.booking.BookingRepository;
 import io.mateu.article2.booking.domain.booking.valueobjects.*;
 import io.mateu.article2.booking.domain.ports.output.EventBus;
-import io.mateu.article2.shared.events.payloads.BookingCreated;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -24,9 +22,9 @@ public class CreateBookingUseCase
 
     public Mono<Void> createBooking(CreateBookingRequest request) {
         return bookingRepository.save(bookingFactory.create(
-                new BookingId(request.bookingId()),
-                new CustomerName(request.customerName()),
-                new ServiceDescription(request.serviceDescription()),
+                new BookingId(request.id()),
+                new CustomerName(request.leadName()),
+                new ServiceDescription(request.service()),
                 new BookingStartDate(request.serviceStartDate()),
                 new BookingEndDate(request.serviceEndDate()),
                 new BookingValue(request.value())

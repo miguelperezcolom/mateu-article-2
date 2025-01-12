@@ -10,10 +10,13 @@ import io.mateu.uidl.data.Destination;
 import io.mateu.uidl.data.DestinationType;
 import io.mateu.uidl.data.Result;
 import io.mateu.uidl.data.ResultType;
+import io.mateu.uidl.interfaces.ActionHandler;
+import io.mateu.uidl.interfaces.UpdatesHash;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +27,7 @@ import java.util.UUID;
 
 @Service
 @Scope("prototype")
-public class BookingCreationForm {
+public class BookingCreationForm implements UpdatesHash, ActionHandler {
 
     final CreateBookingUseCase createBookingUseCase;
     final ApplicationContext applicationContext;
@@ -68,11 +71,20 @@ public class BookingCreationForm {
                 ResultType.Success,
                 "Your booking has beeen successfully created",
                 List.of(),
-                new Destination("xbookings", DestinationType.View, "Back to bookings", "bookings"),
+                new Destination("x", DestinationType.View, "Back to bookings", "#booking_bookings"),
                 null,
-                (target, actionId, serverHttpRequest) -> applicationContext.getBean(BookingCrud.class)
+                this
 
         )));
     }
 
+    @Override
+    public String getHash() {
+        return "new";
+    }
+
+    @Override
+    public Object handle(Object target, String actionId, ServerHttpRequest serverHttpRequest) {
+        return applicationContext.getBean(BookingCrud.class);
+    }
 }

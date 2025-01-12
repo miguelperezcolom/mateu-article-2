@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record CreateBookingRequest(
-        String bookingId,
-        String customerName,
-        String serviceDescription,
+        String id,
+        String leadName,
+        String service,
         LocalDate serviceStartDate,
         LocalDate serviceEndDate,
         BigDecimal value
